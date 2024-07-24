@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generación de Disparadores</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container">
+        <h1 class="mt-5">Generación de Disparadores de Auditoría</h1>
+        <p class="lead">Haga clic en el botón para generar y descargar los disparadores de auditoría.</p>
+        <button id="generateButton" class="btn btn-primary">Generar Disparadores</button>
+        <div id="downloadLink" class="mt-3" style="display: none;">
+            <a href="#" id="download" class="btn btn-success">Descargar Disparadores</a>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById("generateButton").addEventListener("click", function() {
+            fetch('/generate_triggers')
+                .then(response => response.blob())
+                .then(blob => {
+                    const url = window.URL.createObjectURL(blob);
+                    const a = document.getElementById("download");
+                    a.href = url;
+                    a.download = "triggers.sql";
+                    document.getElementById("downloadLink").style.display = "block";
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        });
+    </script>
+</body>
+</html>

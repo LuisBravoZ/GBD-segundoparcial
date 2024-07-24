@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registrar Pedido Complejo</title>
+</head>
+<body>
+    <h1>Registrar Pedido Complejo</h1>
+    <form action="/registrar_pedido" method="POST">
+        <label for="cliente_id">Cliente:</label>
+        <select id="cliente_id" name="cliente_id" required>
+            <option value="">Seleccione un cliente</option>
+            {% for cliente in clientes %}
+            <option value="{{ cliente[0] }}">{{ cliente[1] }} {{ cliente[2] }}</option>
+            {% endfor %}
+        </select><br><br>
+
+        <label for="productos">Productos:</label><br>
+        <small>(Formato: id_producto,cantidad;id_producto,cantidad;...)</small><br>
+        <textarea id="productos" name="productos" rows="4" cols="50" required></textarea><br><br>
+
+        <button type="submit">Registrar Pedido</button>
+    </form>
+
+    <script>
+        // Validación simple del formato de entrada de productos
+        document.querySelector('form').onsubmit = function(e) {
+            var productos = document.getElementById('productos').value;
+            var formatoValido = /^\d+,\d+(;\d+,\d+)*$/.test(productos);
+            if (!formatoValido) {
+                alert('Por favor, ingrese los productos en el formato correcto: id_producto,cantidad;id_producto,cantidad;...');
+                e.preventDefault();
+            }
+        };
+    </script>
+</body>
+</html>
